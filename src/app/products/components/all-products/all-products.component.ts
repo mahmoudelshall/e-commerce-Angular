@@ -10,6 +10,7 @@ import { CategoriesService } from 'src/app/categories/services/categories.servic
 export class AllProductsComponent implements OnInit {
   products: any[] = [];
   categories: any[] = [];
+  cartProducts: any[] = [];
 loading:boolean = false;
   errorMassage: string | null = null;
   constructor(
@@ -84,5 +85,21 @@ loading:boolean = false;
     let selected = e.target.value;
     console.log(selected);
     (selected == 'all')? this.getProducts(): this.getProductsByCategory(selected);
+  }
+
+  addToCart(event:any){
+    if("cart" in localStorage){
+       this.cartProducts = JSON.parse(localStorage.getItem("cart")!);
+       let exist = this.cartProducts.find(item=>item.id == event.id);
+       if(exist){
+        alert("Product is already in your cart");
+       } else{
+        this.cartProducts.push(event);
+        localStorage.setItem("cart",JSON.stringify(this.cartProducts));
+       }
+    }else{
+      this.cartProducts.push(event);
+      localStorage.setItem("cart",JSON.stringify(this.cartProducts));
+    }
   }
 }

@@ -1,10 +1,6 @@
 <div class="mt-5">
     <div class="my-2 w-25">
-        <label for="" class="my-1">Categories:</label>
-        <select class="form-control" (change)="filterCategory($event)">
-            <option value="all">All</option>
-            <option [value]="cat" *ngFor="let cat of categories">{{cat}}</option>
-        </select>
+      <app-select [data] = "categories" title="Categories" (selectedValue)="filterCategory($event)"></app-select>
     </div>
     <div class="row" *ngIf="!loading">
         <div class="col-12" *ngIf="errorMassage !=null">
@@ -12,19 +8,8 @@
                 {{errorMassage}}
             </div>
         </div>
-
-        <div class="col-md-3 col-sm-12" *ngFor="let prod of products">
-            <div class="item">
-                <img [src]="prod.image" alt="">
-                <div class="body">
-                    <h4>{{prod.title}}</h4>
-                    <p>{{prod.description}}</p>
-                </div>
-                <div class="px-3 mb-2 d-flex justify-content-between align-items-center">
-                    <button class="btn btn-success">Add To Cart</button>
-                    <span>{{prod.price}} L.E</span>
-                </div>
-            </div>
+        <div class="col-md-6 col-lg-4 col-xl-3" *ngFor="let prod of products">
+           <app-product [data]="prod" (item)="addToCart($event)"></app-product>
         </div>
     </div>
     <div class="text-center w-100" *ngIf="loading">
