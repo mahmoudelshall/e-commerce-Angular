@@ -1,21 +1,19 @@
 <div class="mt-5">
     <div class="my-2 w-25">
         <label for="" class="my-1">Categories:</label>
-        <select class="form-control">
-            <option value="1">option 1</option>
-            <option value="2">option 2</option>
-            <option value="3">option 3</option>
-            <option value="4">option 4</option>
+        <select class="form-control" (change)="filterCategory($event)">
+            <option value="all">All</option>
+            <option [value]="cat" *ngFor="let cat of categories">{{cat}}</option>
         </select>
     </div>
-    <div class="row">
-        <div class="col-12" *ngIf="errorMassage !=null"> 
+    <div class="row" *ngIf="!loading">
+        <div class="col-12" *ngIf="errorMassage !=null">
             <div class="alert alert-danger text-center" role="alert">
                 {{errorMassage}}
-              </div>
-        </div>    
+            </div>
+        </div>
 
-        <div class="col-md-3 col-sm-12" *ngFor="let prod of products">     
+        <div class="col-md-3 col-sm-12" *ngFor="let prod of products">
             <div class="item">
                 <img [src]="prod.image" alt="">
                 <div class="body">
@@ -28,5 +26,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="text-center w-100" *ngIf="loading">
+        <app-spinner></app-spinner>
     </div>
 </div>

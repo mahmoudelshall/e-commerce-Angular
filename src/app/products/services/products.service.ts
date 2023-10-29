@@ -9,7 +9,10 @@ export class ProductsService {
 
   constructor(private _http:HttpClient) { }
 
-  getAllProduct(){
-    return this._http.get(environment.apiEndpoint+'prodssucts');
+  getAllProducts(){
+    return this._http.get(environment.apiEndpoint+'products');
+  }
+  getProductsByCategory(keyword:string){
+    return this._http.get(environment.apiEndpoint+'products/category/'+keyword);
   }
 }

@@ -9,44 +9,80 @@ import { CategoriesService } from 'src/app/categories/services/categories.servic
 })
 export class AllProductsComponent implements OnInit {
   products: any[] = [];
+  categories: any[] = [];
+loading:boolean = false;
   errorMassage: string | null = null;
-  constructor(private productsPervice: ProductsService, private categoriesService: CategoriesService) {}
+  constructor(
+    private productsPervice: ProductsService,
+    private categoriesService: CategoriesService
+  ) {}
 
   ngOnInit() {
     this.getProducts();
+    this.getCategories();
   }
 
   getProducts() {
-    this.productsPervice.getAllProduct().subscribe({
+    this.loading = true;
+    this.productsPervice.getAllProducts().subscribe({
       next: (res: any) => {
-        console.log('Received res: %s', res);
         this.products = res;
       },
       error: (err: any) => {
         console.log('Error: %s', err);
         console.log(err.message);
         this.errorMassage = err.message;
+        this.loading = false;
       },
       complete: () => {
         console.log('Completed');
+        this.loading = false;
       },
     });
   }
 
   // get all categories
   getCategories(): void {
-    this.categoriesService.getAllCategories().subscribe({
-      next: (data: any[]) => {
-        console.log(`received data : ${JSON.stringify(data)}`);
+        this.loading = true;
+        this.categoriesService.getAllCategories().subscribe({
+      next: (data: any) => {
+        this.categories = data;
       },
       error: (e: any) => {
-       alert(e);
-        },
-        complete: ()=>{
-          console.log("complete");
-          }   
-    })
+        this.loading = false;
+        alert(e.message);
+      },
+      complete: () => {
+        this.loading = false;
+        console.log('categories complete');
+      },
+    });
   }
 
+  // get products by category
+  getProductsByCategory(keyword: string) {
+    this.loading = true;
+    this.productsPervice.getProductsByCategory(keyword).subscribe({
+      next: (res: any) => {
+        this.products = res;
+      },
+      error: (err: any) => {
+        console.log('Error: %s', err);
+        console.log(err.message);
+        this.errorMassage = err.message;
+        this.loading = false;
+      },
+      complete: () => {
+        console.log('Completed');
+        this.loading = false;
+      },
+    });
+  }
 
+  // filter category
+  filterCategory(e: any) {
+    let selected = e.target.value;
+    console.log(selected);
+    (selected == 'all')? this.getProducts(): this.getProductsByCategory(selected);
+  }
 }

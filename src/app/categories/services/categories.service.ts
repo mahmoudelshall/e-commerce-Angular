@@ -9,6 +9,6 @@ export class CategoriesService {
 
   constructor(private _http:HttpClient) { }
   getAllCategories(){
-    return this._http.get(environment.apiEndpoint+'Categories');
+    return this._http.get(environment.apiEndpoint+'products/categories');
   }
 }
