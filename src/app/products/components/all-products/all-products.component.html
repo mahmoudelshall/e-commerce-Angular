@@ -8,7 +8,7 @@
                 {{errorMassage}}
             </div>
         </div>
-        <div class="col-md-6 col-lg-4 col-xl-3" *ngFor="let prod of products">
+        <div class="col-md-6 col-lg-4 col-xl-3" *ngFor="let prod of products" >
            <app-product [data]="prod" (item)="addToCart($event)"></app-product>
         </div>
     </div>

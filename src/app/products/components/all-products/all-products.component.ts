@@ -11,10 +11,10 @@ export class AllProductsComponent implements OnInit {
   products: any[] = [];
   categories: any[] = [];
   cartProducts: any[] = [];
-loading:boolean = false;
+  loading: boolean = false;
   errorMassage: string | null = null;
   constructor(
-    private productsPervice: ProductsService,
+    private productsService: ProductsService,
     private categoriesService: CategoriesService
   ) {}
 
@@ -25,7 +25,7 @@ loading:boolean = false;
 
   getProducts() {
     this.loading = true;
-    this.productsPervice.getAllProducts().subscribe({
+    this.productsService.getAllProducts().subscribe({
       next: (res: any) => {
         this.products = res;
       },
@@ -44,8 +44,8 @@ loading:boolean = false;
 
   // get all categories
   getCategories(): void {
-        this.loading = true;
-        this.categoriesService.getAllCategories().subscribe({
+    this.loading = true;
+    this.categoriesService.getAllCategories().subscribe({
       next: (data: any) => {
         this.categories = data;
       },
@@ -63,7 +63,7 @@ loading:boolean = false;
   // get products by category
   getProductsByCategory(keyword: string) {
     this.loading = true;
-    this.productsPervice.getProductsByCategory(keyword).subscribe({
+    this.productsService.getProductsByCategory(keyword).subscribe({
       next: (res: any) => {
         this.products = res;
       },
@@ -84,22 +84,26 @@ loading:boolean = false;
   filterCategory(e: any) {
     let selected = e.target.value;
     console.log(selected);
-    (selected == 'all')? this.getProducts(): this.getProductsByCategory(selected);
+    selected == 'all'
+      ? this.getProducts()
+      : this.getProductsByCategory(selected);
   }
 
-  addToCart(event:any){
-    if("cart" in localStorage){
-       this.cartProducts = JSON.parse(localStorage.getItem("cart")!);
-       let exist = this.cartProducts.find(item=>item.id == event.id);
-       if(exist){
-        alert("Product is already in your cart");
-       } else{
+  addToCart(event: any) {
+    if ('cart' in localStorage) {
+      this.cartProducts = JSON.parse(localStorage.getItem('cart')!);
+      let exist = this.cartProducts.find(
+        (item) => item.item.id == event.item.id
+      );
+      if (exist) {
+        alert('Product is already in your cart');
+      } else {
         this.cartProducts.push(event);
-        localStorage.setItem("cart",JSON.stringify(this.cartProducts));
-       }
-    }else{
+        localStorage.setItem('cart', JSON.stringify(this.cartProducts));
+      }
+    } else {
       this.cartProducts.push(event);
-      localStorage.setItem("cart",JSON.stringify(this.cartProducts));
+      localStorage.setItem('cart', JSON.stringify(this.cartProducts));
     }
   }
 }

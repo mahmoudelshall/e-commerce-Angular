@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SelectComponent } from './components/select/select.component'; 
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -16,12 +17,15 @@ import { SelectComponent } from './components/select/select.component';
   imports: [
     CommonModule,
     RouterModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
+
   ],
   exports:[
     HeaderComponent,
     SpinnerComponent,
-    SelectComponent
+    SelectComponent,
+    FormsModule
   ]
 })
 export class SharedModule { }
